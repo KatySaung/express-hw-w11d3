@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express( );
 const PORT = 3000;
-const fs = require( 'fs' ) ; // require the file system module
-
+const fs = require( 'fs' ) ; // require the file system module, is a library in the node system
+const fans = require("./models/fans");
 
 // function setting view engine on server called portal.
 // below is configuration for app.engine(callback function,content)
@@ -20,6 +20,15 @@ app.engine('portal', (filePath, options, callback) => {
   })
 })
 
+// Index Route
+app.get('/fans', (req, res) => {
+    res.send(fans);
+})
+
+// Show Route
+app.get('/fans/:id', (req, res)=> {
+    res.send(fans[req.params.id]);
+})
 
 app.set("views", "./views");   // set rendering for views to be at views directory ./views
 app.set("view engine", "portal"); // set default view engine to portal
@@ -87,12 +96,13 @@ app.get("/store", (req, res) =>{
          url: "https://img.thriftbooks.com/api/images/i/m/D36EB7F66EC25F9823B6FB611DAE0EF10B44B787.jpg"
      })
 })
-app.get("/fans", (req, res) =>{
+app.get("/fan-page", (req, res) =>{
      res.render("template", {
          title:  "Rick Ross Fan Club",
          message: "Fan Club",
          content: "Join Rick Ross Fan Club",
      })
+
 })
 app.get("/contact", (req, res) =>{
     res.render("template", {
